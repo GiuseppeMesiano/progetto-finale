@@ -1,0 +1,64 @@
+{
+  "featuredProducts": [
+    {
+      "_id": 1,
+      "nome": "Maglia Real Madrid 23/24",
+      "prezzo": "69.99",
+      "immagine": "https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/f952f4fc563e4cf8b22dafbb008fe903_9366/Maglia_Home_Junior_23-24_Real_Madrid_Bianco_IB0011_01_laydown.jpg",
+      "desc": "Maglia Real Madrid stagione 23/24",
+      "cart": false,
+      "quantity": 0,
+      "category": "calcio"
+    },
+    {
+      "_id": 2,
+      "nome": "POLO ULTIMATE365 SOLID LEFT CHEST",
+      "prezzo": "50",
+      "immagine": "https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/f56e5a191db0402b8ab0ac5c0126e40c_9366/Polo_Ultimate365_Solid_Left_Chest_Bianco_GM4122_01_laydown.jpg",
+      "desc": "",
+      "cart": false,
+      "quantity": 1,
+      "category": "golf"
+    },
+    {
+      "_id": 3,
+      "nome": "Los Angeles Lakers 2023-24 ",
+      "prezzo": "69.99",
+      "immagine": "https://basketballjerseyarchive.com/image/2023/08/23/YUO3rzkVOEdnAwE/los-angeles-lakers-2023-24-city-jersey.jpg",
+      "desc": "",
+      "cart": false,
+      "quantity": 1,
+      "category": "basket"
+    },
+    {
+      "_id": 4,
+      "nome": "T-SHIRT DA TENNIS CLUB 3-STRIPES",
+      "prezzo": "40",
+      "immagine": "https://assets.adidas.com/images/h_840,f_auto,q_auto,fl_lossy,c_fill,g_auto/fe805ed65c6e43c18a07afc4010641f9_9366/T-shirt_da_tennis_Club_3-Stripes_Blu_IJ4882_01_laydown.jpg",
+      "desc": "",
+      "cart": false,
+      "quantity": 0,
+      "category": "tennis"
+    },
+    {
+      "_id": 5,
+      "nome": "Maglia Inter 23/24",
+      "prezzo": "69.99",
+      "immagine": "https://store.inter.it/dw/image/v2/BJBQ_PRD/on/demandware.static/-/Sites-inter-master-catalog/default/dw25f197a0/images/large/23N001M0303_01.jpg?sw=1400&q=80",
+      "desc": "Maglia inter calcio stagione 2023/24",
+      "cart": false,
+      "quantity": 1,
+      "category": "calcio"
+    },
+    {
+      "_id": 6,
+      "nome": "MITCHELL & NESSNBA AUTHENTIC JERSEY CHICAGO BULLS ROAD FINALS 1997-98 MICHAEL JORDAN",
+      "prezzo": "90.99",
+      "immagine": "https://img.bstn.com/eyJidWNrZXQiOiJic3RuLWltYWdlLXNlcnZlciIsImtleSI6ImNhdGFsb2cvcHJvZHVjdC9BSlk0Q1AxOTAxNi1DQlVTQ0FSOTdNSk8vQUpZNENQMTkwMTYtQ0JVU0NBUjk3TUpPLTAxLmpwZyIsImVkaXRzIjp7InJlc2l6ZSI6eyJmaXQiOiJjb250YWluIiwid2lkdGgiOjU4MCwiaGVpZ2h0Ijo3MjUsImJhY2tncm91bmQiOnsiciI6MjU1LCJnIjoyNTUsImIiOjI1NSwiYWxwaGEiOjF9fX19",
+      "desc": "",
+      "cart": false,
+      "quantity": 0,
+      "category": "basket"
+    }
+  ]
+}

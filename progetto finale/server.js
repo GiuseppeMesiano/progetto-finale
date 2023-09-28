@@ -1,57 +1,151 @@
 const express = require('express');
-const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
+const fs = require('fs');
+const cors = require('cors'); 
 
 const app = express();
-const port = process.env.PORT || 5000;
+const PORT = process.env.PORT || 3001;
 
+// middleware CORS 
+app.use(cors());
 
-mongoose.connect('mongodb://localhost:27017/progetto-finale', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
-
-
-const productSchema = new mongoose.Schema({
-  name: String,
-  description: String,
-  price: Number,
-  category: String,
-  image: String,
-});
-
-
-const Product = mongoose.model('Product', productSchema);
-
-app.use(bodyParser.urlencoded({ extended: false }));
+// Utilizza il middleware per il parsing dei dati in formato JSON
 app.use(bodyParser.json());
 
+// Gestisce la richiesta di inserimento di nuovi prodotti nel database
+app.post('/api/products', (req, res) => {
+   fs.readFile('api/db.json', 'utf8', (err, data) => {
+    if (err) {
+      console.error('Errore nella lettura del file:', err);
+      return res.status(500).send('Errore del Server Interno');
+    }
 
-app.post('/api/products', async (req, res) => {
-  try {
-    const { name, description, price, category, image } = req.body;
+    try {
+      const jsonData = JSON.parse(data);
+      const newProduct = {
+        _id: jsonData.featuredProducts.length + 1,
+        ...req.body,
+      };
 
-    
-    const newProduct = new Product({
-      name,
-      description,
-      price,
-      category,
-      image,
-    });
+      jsonData.featuredProducts.push(newProduct);
 
-    
-    await newProduct.save();
+      const updatedData = JSON.stringify(jsonData, null, 2);
 
-    
-    res.status(201).json(newProduct);
-  } catch (error) {
-    console.error('Errore durante l\'inserimento del prodotto:', error);
-    res.status(500).json({ error: 'Errore durante l\'inserimento del prodotto' });
-  }
+      fs.writeFile('api/db.json', updatedData, 'utf8', (err) => {
+        if (err) {
+          console.error('Errore nella scrittura del file:', err);
+          return res.status(500).send('Errore del Server Interno');
+        }
+        console.log('Nuovo prodotto aggiunto con successo.');
+        res.json(newProduct);
+      });
+    } catch (error) {
+      console.error('Errore nel parsing JSON:', error);
+      res.status(500).send('Errore del Server Interno');
+    }
+  });
 });
 
+// Gestisce la richiesta di recupero dei prodotti dal database
+app.get('/api/products', (req, res) => {
+  fs.readFile('api/db.json', 'utf8', (err, data) => {
+    if (err) {
+      console.error('Errore nella lettura del file:', err);
+      return res.status(500).send('Errore del Server Interno');
+    }
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+    try {
+      const jsonData = JSON.parse(data);
+      res.json(jsonData.featuredProducts);
+    } catch (error) {
+      console.error('Errore nel parsing JSON:', error);
+      res.status(500).send('Errore del Server Interno');
+    }
+  });
+});
+
+// Gestisce la richiesta di aggiunta di prodotti al carrello
+app.post('/api/add', (req, res) => {
+  const { productId } = req.body;
+
+  fs.readFile('api/db.json', 'utf8', (err, data) => {
+    if (err) {
+      console.error('Errore nella lettura del file:', err);
+      return res.status(500).send('Errore del Server Interno');
+    }
+
+    try {
+      const jsonData = JSON.parse(data);
+      const product = jsonData.featuredProducts.find((p) => p._id === productId);
+
+      if (!product) {
+        return res.status(404).send('Prodotto non trovato');
+      }
+
+      // Imposta la proprietà 'cart' a true e aumenta la quantità
+      product.cart = true;
+      product.quantity++;
+
+      const updatedData = JSON.stringify(jsonData, null, 2);
+
+      fs.writeFile('api/db.json', updatedData, 'utf8', (err) => {
+        if (err) {
+          console.error('Errore nella scrittura del file:', err);
+          return res.status(500).send('Errore del Server Interno');
+        }
+        console.log('Prodotto aggiunto al carrello con successo.');
+        res.json(product);
+      });
+    } catch (error) {
+      console.error('Errore nel parsing JSON:', error);
+      res.status(500).send('Errore del Server Interno');
+    }
+  });
+});
+
+// Gestisce la richiesta di rimozione dei prodotti dal carrello
+app.post('/api/remove', (req, res) => {
+  const { productId } = req.body;
+
+  fs.readFile('api/db.json', 'utf8', (err, data) => {
+    if (err) {
+      console.error('Errore nella lettura del file:', err);
+      return res.status(500).send('Errore del Server Interno');
+    }
+
+    try {
+      const jsonData = JSON.parse(data);
+      const product = jsonData.featuredProducts.find((p) => p._id === productId);
+
+      if (!product) {
+        return res.status(404).send('Prodotto non trovato');
+      }
+
+      // Imposta la proprietà 'cart' a false e diminuisce la quantità
+      if (product.quantity > 1) {
+        product.quantity--;
+      } else if (product.quantity === 1) {
+        product.cart = false;
+      }
+
+      const updatedData = JSON.stringify(jsonData, null, 2);
+
+      fs.writeFile('api/db.json', updatedData, 'utf8', (err) => {
+        if (err) {
+          console.error('Errore nella scrittura del file:', err);
+          return res.status(500).send('Errore del Server Interno');
+        }
+        console.log('Prodotto rimosso dal carrello con successo.');
+        res.json(product);
+      });
+    } catch (error) {
+      console.error('Errore nel parsing JSON:', error);
+      res.status(500).send('Errore del Server Interno');
+    }
+  });
+});
+
+// Avvia il server 
+app.listen(PORT, () => {
+  console.log(`Il server è in esecuzione su http://localhost:${PORT}`);
 });
